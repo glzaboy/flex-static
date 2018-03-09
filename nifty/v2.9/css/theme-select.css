@@ -1,0 +1,112 @@
+.demo-single-theme > .demo-theme{
+    width: 40px !important;
+}
+.demo-srow-scheme .demo-justify-theme{
+    margin-top: 25px
+}
+.demo-justify-theme{
+    text-align: justify;
+    font-size: 0px
+}
+.demo-justify-theme:after{
+    content: '';
+    display: inline-block;
+    width: 100%
+}
+.demo-theme{
+    cursor: pointer !important;
+    display: inline-block;
+    width: 33.3%;
+    height: 29px;
+    background-color: #f4f4f4;
+    position: relative;
+    transition: all .2s
+}
+.demo-srow-scheme .demo-theme{
+    width: 16.65%;
+    height: 30px
+}
+.demo-theme:hover{
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0,0.3);
+    border: 0;
+    transform: scale(1.1);
+    transition: all .2s;
+    z-index: 100
+}
+.demo-theme.active{
+    cursor: not-allowed!important;
+    opacity:  .8;
+    z-index: 99;
+    transform: scale(1)
+}
+.demo-theme.active:before {
+    background: #fff;
+    content: "";
+    height: 10px;
+    left: 45%;
+    margin-left: -5px;
+    position: absolute;
+    top: 13px;
+    transform: rotate(-45deg);
+    width: 5px;
+    box-shadow: -1px 1px 2px rgba(0,0,0,.5)
+}
+.demo-theme.active:after {
+    background: #fff;
+    content: "";
+    height: 20px;
+    left: 45%;
+    margin-left: 3px;
+    position: absolute;
+    top: 5px;
+    transform: rotate(45deg);
+    width: 5px;
+    box-shadow: 2px 0 2px rgba(0,0,0,.5)
+}
+
+.demo-theme.disabled{
+    cursor: not-allowed !important
+}
+.demo-theme-light{
+    background: #fff;
+    border: 1px solid #ddd !important;
+}
+.demo-theme-light.active:before, .demo-theme-light.active:after{
+    background: #177bbb
+}
+.demo-theme-gray{
+    background: #8f9ea6;
+}
+.demo-theme-coffee{
+    background: #807362;
+}
+.demo-theme-dark{
+    background: #3a444e
+}
+.demo-theme-dust{
+    background: #fd8943;
+}
+.demo-theme-lime{
+    background: #80b343;
+}
+.demo-theme-mint{
+    background: #26a69a;
+}
+.demo-theme-navy{
+    background: #294d73;
+}
+.demo-theme-ocean{
+    background: #177bbb;
+}
+.demo-theme-prickly-pear{
+    background: #ad5468;
+}
+.demo-theme-purple{
+    background: #8b5b9f;
+}
+.demo-theme-well-red{
+    background: #d23e3e;
+}
+.demo-theme-yellow{
+    background: #efd45a;
+}
