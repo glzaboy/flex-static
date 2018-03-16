@@ -1080,7 +1080,10 @@
             var i = n(".aside-toggle");
             i.length && i.on("click", function (a) {
                 a.preventDefault(), a.stopPropagation(), n(".dropdown.open").removeClass("open"), n.niftyAside("toggleHideShow"), n(this).parent("li").toggleClass("open")
-            })
+            });
+            n("html").on("click",function (e) {
+                !n(e.target).closest("#aside-container").length   && a.hasClass("aside-in") && (n.niftyAside("hide"));
+            });
         }
     };
     n.niftyAside = function (n, a) {
