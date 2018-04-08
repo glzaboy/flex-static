@@ -2121,7 +2121,9 @@
 
     <!--NiftyJS [ RECOMMENDED ]-->
     <script src="js/nifty.min.js"></script>
-    <script src="/jqueryForm/jquery.form.js"></script>
+    <script src="/plugins/jquery.form.js"></script>
+    <script src="/plugins/jquery.dialog.js"></script>
+
 
 
 
@@ -2131,6 +2133,53 @@
     <!--Demo script [ DEMONSTRATION ]-->
     <script src="js/demo/nifty-demo.min.js"></script>
     <script>
+        $(document).on('nifty.ready',function (){
+            $.dialog({
+                url:'http://localhost:8089/nifty/v2.9/',
+                message: "I am a custom dialog",
+                title: "Custom title",
+                buttons: {
+                    success: {
+                        label: "Success!",
+                        className: "btn-success",
+                        callback: function() {
+                            $.niftyNoty({
+                                type: 'success',
+                                message : '<strong>Well done!</strong> You successfully read this important alert message. ',
+                                container : 'floating',
+                                timer : 5000
+                            });
+                        }
+                    },
+
+                    danger: {
+                        label: "Danger!",
+                        className: "btn-danger",
+                        callback: function() {
+                            $.niftyNoty({
+                                type: 'danger',
+                                message : '<strong>Oh snap!</strong> Change a few things up and try submitting again.',
+                                container : 'floating',
+                                timer : 5000
+                            });
+                        }
+                    },
+
+                    main: {
+                        label: "Click ME!",
+                        className: "btn-primary",
+                        callback: function() {
+                            $.niftyNoty({
+                                type: 'primary',
+                                message : "<strong>Heads up!</strong> This alert needs your attention, but it's not super important.",
+                                container : 'floating',
+                                timer : 5000
+                            });
+                        }
+                    }
+                }
+            });
+        })
         function ajaxprocess(data){
             if(typeof data ==="string"){
                 try{
