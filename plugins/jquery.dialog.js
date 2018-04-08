@@ -17,40 +17,32 @@
     // the base DOM structure needed to create a modal
     var templates = {
         dialog:
-        "<div class='jquerydialog modal' tabindex='-1' role='dialog'><div class='modal-dialog'><div class='modal-content'><div class=\"modal-header\">\n" +
-        "                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\"><i class=\"pci-cross pci-circle\"></i></button>\n" +
-        "                    <h4 class=\"modal-title\">Modal Heading</h4>\n" +
-        "                </div><div class='modal-body'></div><div class='modal-footer'></div></div></div></div>",
-        footer:
-            "<div class='modal-footer'></div>",
+        "<div class='jquerydialog modal' tabindex='-1' role='dialog'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'> <button type='button' class='close' data-dismiss='modal'><i class='pci-cross pci-circl'></i></button>" +
+        "<h4 class='modal-title'>Modal Heading</h4></div><div class='modal-body'></div><div class='modal-footer'></div></div></div></div>",
         form:
-            "<form class='bootbox-form'></form>",
-        inputs: {
-            text:
-                "<input class='bootbox-input bootbox-input-text form-control' autocomplete=off type=text />",
-            textarea:
-                "<textarea class='bootbox-input bootbox-input-textarea form-control'></textarea>",
-            email:
-                "<input class='bootbox-input bootbox-input-email form-control' autocomplete='off' type='email' />",
-            select:
-                "<select class='bootbox-input bootbox-input-select form-control'></select>",
-            checkbox:
-                "<div class='checkbox'><label><input class='bootbox-input bootbox-input-checkbox' type='checkbox' /></label></div>",
-            date:
-                "<input class='bootbox-input bootbox-input-date form-control' autocomplete=off type='date' />",
-            time:
-                "<input class='bootbox-input bootbox-input-time form-control' autocomplete=off type='time' />",
-            number:
-                "<input class='bootbox-input bootbox-input-number form-control' autocomplete=off type='number' />",
-            password:
-                "<input class='bootbox-input bootbox-input-password form-control' autocomplete='off' type='password' />"
-        }
+            "<form class='bootbox-form'></form>"
     };
     function each(collection, iterator) {
         var index = 0;
         $.each(collection, function(key, value) {
             iterator(key, value, index++);
         });
+    }
+    function processCallback(e, dialog, callback) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        // by default we assume a callback will get rid of the dialog,
+        // although it is given the opportunity to override this
+
+        // so, if the callback can be invoked and it *explicitly returns false*
+        // then we'll set a flag to keep the dialog active...
+        var preserveDialog = $.isFunction(callback) && callback(e) === false;
+
+        // ... otherwise we'll bin it
+        if (!preserveDialog) {
+            Plugin("hide");
+        }
     }
     var dialog = function (element, options) {
         this.$element      = $(element)
@@ -78,10 +70,18 @@
         }
         if (this.options.url) {
             this.load(this.options.url);
+        }else{
+            this.$element.find('.modal-body').html(this.options.message);
         }
         if (buttonStr.length) {
             this.$element.find(".modal-footer").html(buttonStr);
         }
+        this.$element.on('click',".modal-footer button", function(e) {
+            var callbackKey = $(this).data("bb-handler");
+
+            processCallback(e, dialog, callbacks[callbackKey]);
+
+        });
 
         this.$element.modal(this.options);
     }

@@ -2135,7 +2135,7 @@
     <script>
         $(document).on('nifty.ready',function (){
             $.dialog({
-                url:'http://localhost:8089/nifty/v2.9/',
+                // url:'http://localhost:8089/nifty/v2.9/',
                 message: "I am a custom dialog",
                 title: "Custom title",
                 buttons: {
@@ -2150,9 +2150,7 @@
                                 timer : 5000
                             });
                         }
-                    },
-
-                    danger: {
+                    },danger:{
                         label: "Danger!",
                         className: "btn-danger",
                         callback: function() {
