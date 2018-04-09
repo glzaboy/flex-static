@@ -627,28 +627,30 @@
 }(jQuery), !function (n) {
     "use strict";
     n(document).on("nifty.ready", function () {
-        var a = {
-            closeBtn: n('[data-dismiss="panel"], [data-panel="dismiss"]'),
-            minMaxBtn: n('[data-panel="minmax"]'),
-            fullScreen: n('[data-panel="fullscreen"]')
-        };
-        a.closeBtn.length && a.closeBtn.one("click", function (a) {
+        n(document).on('click','[data-panel="fullscreen"]',function () {
+            var a = n(this).parents(".panel");
+            a.toggleClass("fullscreen"), n("body").toggleClass("panel-fullscreen");
+            a.trigger('nifty.pannel.fullscreenChange');
+        });
+        n(document).on('click','[data-panel="minmax"]',function () {
+            if(!n(this).attr('data-target')){
+                var a=n(this).parents(".panel").find(".collapse");
+                a.prop("id", "panel-collapse-" + (65536 * (1 + Math.random()) | 0).toString(16).substring(1));
+                a.hasClass("in") ? n(this).attr("aria-expanded", "true") : n(this).attr("aria-expanded", "false");
+                n(this).attr({
+                    "data-target": "#" + a.prop("id"),
+                    "data-toggle": "collapse"
+                }).trigger('click');
+            }
+        });
+        n(document).on('click','[data-dismiss="panel"], [data-panel="dismiss"]',function (a) {
             a.preventDefault();
             var e = n(this).parents(".panel");
             e.addClass("remove").on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function (a) {
                 "opacity" == a.originalEvent.propertyName && (e.remove(), n("body").removeClass("panel-fullscreen"))
             })
-        }), a.minMaxBtn.length && a.minMaxBtn.each(function () {
-            var a = n(this).parents(".panel").find(".collapse");
-            a.prop("id") || a.prop("id", "panel-collapse-" + (65536 * (1 + Math.random()) | 0).toString(16).substring(1)), n(this).attr({
-                "data-target": "#" + a.prop("id"),
-                "data-toggle": "collapse"
-            }), a.hasClass("in") ? n(this).attr("aria-expanded", "true") : n(this).attr("aria-expanded", "false")
-        }), a.fullScreen.length && a.fullScreen.on("click", function () {
-            var a = n(this).parents(".panel");
-            a.toggleClass("fullscreen"), n("body").toggleClass("panel-fullscreen")
-        })
-    })
+        });
+    });
 }(jQuery), !function (n) {
     "use strict";
     n(document).one("nifty.ready", function () {

@@ -17,8 +17,14 @@
     // the base DOM structure needed to create a modal
     var templates = {
         dialog:
-        "<div class='jquerydialog modal' tabindex='-1' role='dialog'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'> <button type='button' class='close' data-dismiss='modal'><i class='pci-cross pci-circl'></i></button>" +
-        "<h4 class='modal-title'>Modal Heading</h4></div><div class='modal-body'></div><div class='modal-footer'></div></div></div></div>",
+        "<div class='jquerydialog modal' tabindex='-1' role='dialog'><div class='modal-dialog modal-lg'><div class='modal-content'><div class='panel'><div class='panel-heading'><div class=\"panel-control\">\n" +
+        "            <button class=\"btn btn-default\" data-panel=\"fullscreen\">\n" +
+        "                <i class=\"icon-max demo-psi-maximize-3\"></i>\n" +
+        "                <i class=\"icon-min demo-psi-minimize-3\"></i>\n" +
+        "            </button>\n" +
+        "        </div>\n" +
+        "        <h3 class=\"panel-title\">Pannel</h3></div><div class=\"panel-body\">\n" +
+        "    </div><div class='modal-footer'></div></div></div></div></div>",
         form:
             "<form class='bootbox-form'></form>"
     };
@@ -66,12 +72,12 @@
         //     body.before(templates.header);
         // }
         if (this.options.title) {
-            this.$element.find(".modal-title").html(this.options.title);
+            this.$element.find(".panel-title").html(this.options.title);
         }
         if (this.options.url) {
             this.load(this.options.url);
         }else{
-            this.$element.find('.modal-body').html(this.options.message);
+            this.$element.find('.panel-body').html(this.options.message);
         }
         if (buttonStr.length) {
             this.$element.find(".modal-footer").html(buttonStr);
@@ -100,7 +106,7 @@
     }
     dialog.prototype.load=function (url){
         this.$element
-            .find('.modal-body')
+            .find('.panel-body')
             .load(url, $.proxy(function () {
                 this.$element.trigger('loaded.bs.modal')
             }, this));
@@ -147,4 +153,11 @@
         $.dialog = old
         return this;
     };
+    $(document).on('nifty.pannel.fullscreenChange','.jquerydialog .panel',function () {
+        if($(this).hasClass('fullscreen')){
+            $(this).parents('.modal-dialog').removeClass('modal-dialog')
+        }else{
+            $(this).parents('.modal-lg').addClass('modal-dialog')
+        }
+    })
 }));
