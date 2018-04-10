@@ -18,15 +18,8 @@
     var templates = {
         dialog:
         "<div class='jquerydialog modal' tabindex='-1' role='dialog'><div class='modal-dialog modal-lg'><div class='modal-content'><div class='panel'><div class='panel-heading'><div class=\"panel-control\">\n" +
-        "            <button class=\"btn btn-default\" data-panel=\"fullscreen\">\n" +
-        "                <i class=\"icon-max demo-psi-maximize-3\"></i>\n" +
-        "                <i class=\"icon-min demo-psi-minimize-3\"></i>\n" +
-        "            </button>\n" +
-        "        </div>\n" +
-        "        <h3 class=\"panel-title\">Pannel</h3></div><div class=\"panel-body\">\n" +
-        "    </div><div class='modal-footer'></div></div></div></div></div>",
-        form:
-            "<form class='bootbox-form'></form>"
+        "<button class='btn btn-default' data-panel='fullscreen'><i class='icon-max demo-psi-maximize-3'></i><i class='icon-min demo-psi-minimize-3'></i></button><button class='btn btn-default' data-panel='hide'><i class='demo-psi-cross'></i></button>\n" +
+        "</div><h3 class='panel-title'>Pannel</h3></div><div class='panel-body'></div><div class='modal-footer'></div></div></div></div></div>",
     };
     function each(collection, iterator) {
         var index = 0;
@@ -47,11 +40,11 @@
 
         // ... otherwise we'll bin it
         if (!preserveDialog) {
-            Plugin("hide");
+            Plugin("remove");
         }
     }
     var dialog = function (element, options) {
-        this.$element      = $(element)
+        this.$element      = $(element);
         this.options       = $.extend({}, dialog.DEFAULTS, options);
         console.log(this.options);
         var body = this.$element.find(".modal-body");
@@ -81,6 +74,8 @@
         }
         if (buttonStr.length) {
             this.$element.find(".modal-footer").html(buttonStr);
+        }else{
+            this.$element.find(".modal-footer").hide();
         }
         this.$element.on('click',".modal-footer button", function(e) {
             var callbackKey = $(this).data("bb-handler");
@@ -90,20 +85,20 @@
         });
 
         this.$element.modal(this.options);
-    }
+    };
     dialog.DEFAULTS={
         title:'提示消息',
         remote:'',
-        backdrop: false,
+        backdrop: true,
         keyboard: true,
         show: true
     };
     dialog.prototype.hide=function (){
         this.$element.modal('hide');
-    }
+    };
     dialog.prototype.show=function (){
         this.$element.modal('show');
-    }
+    };
     dialog.prototype.load=function (url){
         this.$element
             .find('.panel-body')
@@ -111,53 +106,63 @@
                 this.$element.trigger('loaded.bs.modal')
             }, this));
         this.$element.modal('show');
-    }
+    };
+    dialog.prototype.remove=function (url){
+        this.hide();
+        this.$element.remove();
+    };
 
-    // MODAL PLUGIN DEFINITION
+    // Dialog PLUGIN DEFINITION
     // =======================
 
     function Plugin(option, _relatedTarget) {
         var jquerydialog=$('.jquerydialog');
         if(jquerydialog.length){
             jquerydialog.each(function () {
-                var $this   = $(this)
-                var data    = $this.data('bs.dialog')
-                var options = $.extend({}, dialog.DEFAULTS, $this.data(), typeof option == 'object' && option)
+                var $this   = $(this);
+                var data    = $this.data('bs.dialog');
+                var options = $.extend({}, dialog.DEFAULTS, $this.data(), typeof option == 'object' && option);
 
-                if (!data) $this.data('bs.dialog', (data = new dialog(this, options)))
-                if (typeof option == 'string') data[option](_relatedTarget)
-                else if (options.show) data.show(_relatedTarget)
+                if (!data) $this.data('bs.dialog', (data = new dialog(this, options)));
+                if (typeof option == 'string') data[option](_relatedTarget);
+                else if (options.show) data.show(_relatedTarget);
             });
         }else{
             return $(templates.dialog).each(function () {
-                var $this   = $(this)
-                var data    = $this.data('bs.dialog')
-                var options = $.extend({}, dialog.DEFAULTS, $this.data(), typeof option == 'object' && option)
+                var $this   = $(this);
+                var data    = $this.data('bs.dialog');
+                var options = $.extend({}, dialog.DEFAULTS, $this.data(), typeof option == 'object' && option);
 
-                if (!data) $this.data('bs.dialog', (data = new dialog(this, options)))
-                if (typeof option == 'string') data[option](_relatedTarget)
-                else if (options.show) data.show(_relatedTarget)
+                if (!data) $this.data('bs.dialog', (data = new dialog(this, options)));
+                if (typeof option == 'string') data[option](_relatedTarget);
+                else if (options.show) data.show(_relatedTarget);
             });
         }
     }
     var old = $.dialog;
 
-    $.dialog             = Plugin
-    $.dialog.Constructor = dialog
+    $.dialog             = Plugin;
+    $.dialog.Constructor = dialog;
 
 
     // COLLAPSE NO CONFLICT
     // ====================
 
     $.dialog.noConflict = function () {
-        $.dialog = old
+        $.dialog = old;
         return this;
     };
-    $(document).on('nifty.pannel.fullscreenChange','.jquerydialog .panel',function () {
+    $(document).on('nifty.panel.fullscreenChange','.jquerydialog .panel',function () {
         if($(this).hasClass('fullscreen')){
-            $(this).parents('.modal-dialog').removeClass('modal-dialog')
+            $(this).parents('.modal-dialog').removeClass('modal-dialog').css('text-align','left');
         }else{
-            $(this).parents('.modal-lg').addClass('modal-dialog')
+            $(this).parents('.modal-lg').addClass('modal-dialog').css('text-align','auto');
         }
+    });
+    $(document).on('nifty.panel.hide','.jquerydialog .panel',function () {
+        if($(this).hasClass('fullscreen')){
+            $(this).parents('.modal-lg').addClass('modal-dialog');
+        }
+        $.dialog("remove");
     })
 }));

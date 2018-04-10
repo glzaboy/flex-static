@@ -630,7 +630,7 @@
         n(document).on('click','[data-panel="fullscreen"]',function () {
             var a = n(this).parents(".panel");
             a.toggleClass("fullscreen"), n("body").toggleClass("panel-fullscreen");
-            a.trigger('nifty.pannel.fullscreenChange');
+            a.trigger('nifty.panel.fullscreenChange');
         });
         n(document).on('click','[data-panel="minmax"]',function () {
             if(!n(this).attr('data-target')){
@@ -648,7 +648,16 @@
             var e = n(this).parents(".panel");
             e.addClass("remove").on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function (a) {
                 "opacity" == a.originalEvent.propertyName && (e.remove(), n("body").removeClass("panel-fullscreen"))
-            })
+            });
+            e.trigger('nifty.panel.close');
+        });
+        n(document).on('click','[data-panel="hide"]',function (a) {
+            a.preventDefault();
+            var e = n(this).parents(".panel");
+            e.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function (a) {
+                "opacity" == a.originalEvent.propertyName && (e.hide(), n("body").removeClass("panel-fullscreen"))
+            });
+            e.trigger('nifty.panel.hide');
         });
     });
 }(jQuery), !function (n) {
