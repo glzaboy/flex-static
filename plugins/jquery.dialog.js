@@ -17,7 +17,7 @@
     // the base DOM structure needed to create a modal
     var templates = {
         dialog:
-        "<div class='jquerydialog modal' tabindex='-1' role='dialog' style='z-index:100000'><div class='modal-dialog modal-lg'><div class='modal-content'><div class='panel'><div class='panel-heading'><div class=\"panel-control\">\n" +
+        "<div class='jquerydialog modal' tabindex='-1' role='dialog' style='z-index:100000'><div class='modal-dialog modal-lg text-left'><div class='modal-content'><div class='panel'><div class='panel-heading'><div class=\"panel-control\">\n" +
         "<button class='btn btn-default' data-panel='fullscreen'><i class='icon-max demo-psi-maximize-3'></i><i class='icon-min demo-psi-minimize-3'></i></button><button class='btn btn-default' data-panel='hide'><i class='demo-psi-cross'></i></button>\n" +
         "</div><h3 class='panel-title'>Pannel</h3></div><div class='panel-body'></div><div class='modal-footer'></div></div></div></div></div>",
     };
@@ -154,9 +154,9 @@
     };
     $(document).on('nifty.panel.fullscreenChange','.jquerydialog .panel',function () {
         if($(this).hasClass('fullscreen')){
-            $(this).parents('.modal-dialog').removeClass('modal-dialog').css('text-align','left');
+            $(this).parents('.modal-dialog').removeClass('modal-dialog');
         }else{
-            $(this).parents('.modal-lg').addClass('modal-dialog').css('text-align','auto');
+            $(this).parents('.modal-lg').addClass('modal-dialog');
         }
     });
     $(document).on('nifty.panel.hide','.jquerydialog .panel',function () {
