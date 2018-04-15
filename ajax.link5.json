@@ -1,0 +1,8 @@
+{
+  "message":"请求后并隐藏区块",
+  "link":"/2.html",
+
+  "autoJump":false,
+  "autoHide":".row",
+  "linkTextChange":"请求后并隐藏区块"
+}

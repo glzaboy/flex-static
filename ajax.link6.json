@@ -1,0 +1,7 @@
+{
+  "link":"/2.html",
+
+  "autoJump":false,
+  "autoHide":".row",
+  "linkTextChange":"请求后并隐藏区块"
+}

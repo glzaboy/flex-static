@@ -1,0 +1,8 @@
+{
+  "message":"页面马上自动跳转了",
+  "link":"/2.html",
+
+  "autoJump":10,
+  "autoHide":false,
+  "linkTextChange":"页面马上自动跳转了"
+}

@@ -1,0 +1,8 @@
+{
+  "message":"请求后页面自动隐藏自己链接",
+  "link":"/2.html",
+
+  "autoJump":false,
+  "autoHide":true,
+  "linkTextChange":"请求后页面自动隐藏自己链接"
+}
