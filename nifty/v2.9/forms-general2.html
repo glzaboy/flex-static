@@ -39,7 +39,7 @@
 
 
     <!--Demo [ DEMONSTRATION ]-->
-    <link href="css/demo/nifty-demo.min.css" rel="stylesheet">
+    <!--<link href="css/demo/nifty-demo.min.css" rel="stylesheet">-->
 
 
             
@@ -98,17 +98,17 @@
 					
 					        <!-- Inline Form  -->
 					        <!--===================================================-->
-					        <form class="form-inline ajaxform">
+					        <form class="form-inline ajaxform" method="post" action="/ajax.link2.json">
 					            <div class="form-group">
 					                <label for="demo-inline-inputmail" class="sr-only">Email address</label>
-					                <input type="email" placeholder="Enter email" id="demo-inline-inputmail" class="form-control">
+					                <input type="email" name="email" placeholder="Enter email" id="demo-inline-inputmail" class="form-control">
 					            </div>
 					            <div class="form-group">
 					                <label for="demo-inline-inputpass" class="sr-only">Password</label>
-					                <input type="password" placeholder="Password" id="demo-inline-inputpass" class="form-control">
+					                <input type="password" name="password"  placeholder="Password" id="demo-inline-inputpass" class="form-control">
 					            </div>
 					            <div class="checkbox">
-					                <input id="demo-remember-me" class="magic-checkbox" type="checkbox">
+					                <input id="demo-remember-me" name="remember" class="magic-checkbox" type="checkbox">
 					                <label for="demo-remember-me">Remember me</label>
 					            </div>
 					            <button class="btn btn-primary" type="submit">Sign in</button>
@@ -227,7 +227,6 @@
 
     <!--NiftyJS [ RECOMMENDED ]-->
     <script src="js/nifty.min.js"></script>
-    <script src="/plugins/jquery.form.js"></script>
     <script src="/plugins/jquery.dialog.min.js"></script>
 
 
@@ -237,7 +236,7 @@
     <!--=================================================-->
     
     <!--Demo script [ DEMONSTRATION ]-->
-    <script src="js/demo/nifty-demo.min.js"></script>
+    <!--<script src="js/demo/nifty-demo.min.js"></script>-->
     <script>
         $('body').on('req.ajax','.ajax',function(e){
             var linkobj=$(this);
@@ -391,101 +390,121 @@
                 });
                 return false;
             }
-
             jqueryfrom.data('submiting',1);
-            jqueryfrom.ajaxSubmit({
-                dataType : 'json',
-                beforeSend : function(data) {
-                    console.log("beforeSend:");
-                    console.log(data);
-                //         jqueryfrom.find('.control-group').each(
-                //             function(index,item) {
-                //                 if ($(this).hasClass('error')&& $(this).find('span.help-inline,span.help-block').data('orgtext')) {
-                //                     $(this).removeClass('error').find('span.help-inline,span.help-block').html($(this).find('span.help-inline,span.help-block').data('orgtext'));
-                //                 } else if($(this).hasClass('error')) {
-                //                     $(this).removeClass('error').find('span.help-inline,span.help-block').remove();
-                //                 }
-                //             });
-                //         jqueryfrom.find('.alert-block').remove();
-                //         cploading();
-                },
-                complete:function (){
-                    jqueryfrom.data('submiting',0);
-                    console.log("complete");
-                },
-                beforeSubmit : function(arr, form,options) {
-                    if ($.isFunction(beforeSubmit)) {
-                        var res = beforeSubmit(arr, form,options);
-                        console.log(res);
-                        if(res == false){
-                            jqueryfrom.data('submiting',0);
-                        }
-                        return res;
-                    }
-                    return true;
-                },
-                //     success : function(data, statusText) {
-                //         console.log("success");
-                //         cploadingdestroy();
-                //         if (data.msg) {
-                //             if (data.state == 1) {
-                //                 if (data.url) {
-                //                     buttons = [ {
-                //                         'text' : '确定',
-                //                         'click' : function() {
-                //                             cpdialogdestroy();
-                //                             window.location.href = escape2Html(data.url);
-                //                         }
-                //                     } ];
-                //                 } else {
-                //                     buttons = [ {
-                //                         'text' : '确定',
-                //                         'click' : function() {
-                //                             cpdialogdestroy();
-                //                         }
-                //                     } ];
-                //                 }
-                //                 cpdialog("提示信息",data.msg,buttons);
-                //             } else if (data.state == 2) {
-                //                 buttons = [];
-                //                 cpdialog("",data.msg,buttons,false,2);
-                //                 if (data.url) {
-                //                     window.setTimeout(function() {
-                //                         window.location.href = data.url;
-                //                     }, 2000);
-                //                 }
-                //             } else {
-                //                 if (data.field) {
-                //                     if (jqueryfrom.find('input[name=\''+ data.field+ '\']').parents('.control-group').size()
-                //                         || jqueryfrom.find('textarea[name=\''+ data.field+ '\']').parents('.control-group').size()
-                //                         || jqueryfrom.find('select[name=\''+ data.field+ '\']').parents('.control-group').size()) {
-                //                         obj = jqueryfrom.find('input[name=\''+ data.field+ '\'],textarea[name=\''+ data.field+ '\'],select[name=\''+ data.field+ '\']').parents('.control-group');
-                //                         obj.addClass('error');
-                //                         if (obj.find('.help-inline,.help-block').size()) {
-                //                             html = obj.find('.help-inline,.help-block').html();
-                //                             obj.find('.help-inline,.help-block').data('orgtext',html).html(data.msg);
-                //                         } else {
-                //                             obj.find('.controls').append('<span class=\"help-inline\">'+ data.msg+ '</span>');
-                //                         }
-                //                     } else {
-                //                         jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
-                //                     }
-                //                 }else{
-                //                     jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
-                //                 }
-                //                 if (data.url) {
-                //                     window.setTimeout(function() {
-                //                         window.location.href = data.url;
-                //                     }, 2000);
-                //                 }
-                //             }
-                //         }
-                //         if ($.isFunction(afterSucess)) {
-                //             afterSucess(data, statusText);
-                //         }
-                //         jqueryfrom.data('submiting',0);
-                //     }
+            var options={};
+            options.url=jqueryfrom.attr('action')?jqueryfrom.attr('action'):window.location.href;
+            options.type=jqueryfrom.attr('method')?jqueryfrom.attr('method'):'GET';
+            options.data=jqueryfrom.serializeArray();
+            options.dataType ='json';
+            if (options.type.toUpperCase() == 'GET') {
+                var queryString = $.param( options.data);
+                options.url += (options.url.indexOf('?') >= 0 ? '&' : '?') + queryString;
+                options.data = null;  // data is null for 'get'
+            }
+
+
+            console.log(options)
+            $.ajax(options)
+            .done(function (data, statusText){
+                console.log(data);
+                console.log(statusText);
+            }).fail(function (jqXHR, statusText){
+                console.error(statusText);
+                $.niftyNoty({
+                    type: 'danger',
+                    message : '提交数据出错，可能是服务器正在维护或是网络问题，请稍后再试。',
+                    container : 'floating',
+                    timer : 5000
                 });
+            }).always(function (){
+                jqueryfrom.data('submiting',0);
+                console.log("complete");
+            });
+
+
+
+
+            //
+            // jqueryfrom.data('submiting',1);
+            // console.log($(this).serializeArray());
+            // jqueryfrom.ajaxSubmit({
+            //     dataType : 'json',
+            //     beforeSend : function(data) {
+            //         console.log("beforeSend:");
+            //         console.log(data);
+            //     //         jqueryfrom.find('.control-group').each(
+            //     //             function(index,item) {
+            //     //                 if ($(this).hasClass('error')&& $(this).find('span.help-inline,span.help-block').data('orgtext')) {
+            //     //                     $(this).removeClass('error').find('span.help-inline,span.help-block').html($(this).find('span.help-inline,span.help-block').data('orgtext'));
+            //     //                 } else if($(this).hasClass('error')) {
+            //     //                     $(this).removeClass('error').find('span.help-inline,span.help-block').remove();
+            //     //                 }
+            //     //             });
+            //     //         jqueryfrom.find('.alert-block').remove();
+            //     //         cploading();
+            //     },
+            //     //     success : function(data, statusText) {
+            //     //         console.log("success");
+            //     //         cploadingdestroy();
+            //     //         if (data.msg) {
+            //     //             if (data.state == 1) {
+            //     //                 if (data.url) {
+            //     //                     buttons = [ {
+            //     //                         'text' : '确定',
+            //     //                         'click' : function() {
+            //     //                             cpdialogdestroy();
+            //     //                             window.location.href = escape2Html(data.url);
+            //     //                         }
+            //     //                     } ];
+            //     //                 } else {
+            //     //                     buttons = [ {
+            //     //                         'text' : '确定',
+            //     //                         'click' : function() {
+            //     //                             cpdialogdestroy();
+            //     //                         }
+            //     //                     } ];
+            //     //                 }
+            //     //                 cpdialog("提示信息",data.msg,buttons);
+            //     //             } else if (data.state == 2) {
+            //     //                 buttons = [];
+            //     //                 cpdialog("",data.msg,buttons,false,2);
+            //     //                 if (data.url) {
+            //     //                     window.setTimeout(function() {
+            //     //                         window.location.href = data.url;
+            //     //                     }, 2000);
+            //     //                 }
+            //     //             } else {
+            //     //                 if (data.field) {
+            //     //                     if (jqueryfrom.find('input[name=\''+ data.field+ '\']').parents('.control-group').size()
+            //     //                         || jqueryfrom.find('textarea[name=\''+ data.field+ '\']').parents('.control-group').size()
+            //     //                         || jqueryfrom.find('select[name=\''+ data.field+ '\']').parents('.control-group').size()) {
+            //     //                         obj = jqueryfrom.find('input[name=\''+ data.field+ '\'],textarea[name=\''+ data.field+ '\'],select[name=\''+ data.field+ '\']').parents('.control-group');
+            //     //                         obj.addClass('error');
+            //     //                         if (obj.find('.help-inline,.help-block').size()) {
+            //     //                             html = obj.find('.help-inline,.help-block').html();
+            //     //                             obj.find('.help-inline,.help-block').data('orgtext',html).html(data.msg);
+            //     //                         } else {
+            //     //                             obj.find('.controls').append('<span class=\"help-inline\">'+ data.msg+ '</span>');
+            //     //                         }
+            //     //                     } else {
+            //     //                         jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
+            //     //                     }
+            //     //                 }else{
+            //     //                     jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
+            //     //                 }
+            //     //                 if (data.url) {
+            //     //                     window.setTimeout(function() {
+            //     //                         window.location.href = data.url;
+            //     //                     }, 2000);
+            //     //                 }
+            //     //             }
+            //     //         }
+            //     //         if ($.isFunction(afterSucess)) {
+            //     //             afterSucess(data, statusText);
+            //     //         }
+            //     //         jqueryfrom.data('submiting',0);
+            //     //     }
+            //     });
 
         });
         function fixajaxdialog(){
