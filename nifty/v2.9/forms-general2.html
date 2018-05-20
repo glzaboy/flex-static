@@ -403,11 +403,74 @@
             }
 
 
-            console.log(options)
+            console.log(options);
+            jqueryfrom.find('.form-group').each(
+                function(index,item) {
+                    if ($(this).hasClass('has-error')&& $(this).find('span.help-inline,span.help-block').data('orgtext')) {
+                        $(this).removeClass('has-error').find('span.help-inline,span.help-block').html($(this).find('span.help-inline,span.help-block').data('orgtext'));
+                    } else if($(this).hasClass('has-error')) {
+                        $(this).removeClass('has-error').find('span.help-inline,span.help-block').remove();
+                    }
+                }
+            );
+            jqueryfrom.find('.alert-block').remove();
             $.ajax(options)
             .done(function (data, statusText){
                 console.log(data);
-                console.log(statusText);
+                if (data.msg) {
+                    if (data.state == 1) {
+                        if (data.url) {
+                            buttons = [ {
+                                'text' : '确定',
+                                'click' : function() {
+                                    cpdialogdestroy();
+                                    window.location.href = escape2Html(data.url);
+                                }
+                            } ];
+                        } else {
+                            buttons = [ {
+                                'text' : '确定',
+                                'click' : function() {
+                                    cpdialogdestroy();
+                                }
+                            } ];
+                        }
+                        cpdialog("提示信息",data.msg,buttons);
+                    } else if (data.state == 2) {
+                        buttons = [];
+                        cpdialog("",data.msg,buttons,false,2);
+                        if (data.url) {
+                            window.setTimeout(function() {
+                                window.location.href = data.url;
+                            }, 2000);
+                        }
+                    } else {
+                        if (data.field) {
+                            if (jqueryfrom.find('input[name=\''+ data.field+ '\']').parents('.control-group').size()
+                                || jqueryfrom.find('textarea[name=\''+ data.field+ '\']').parents('.control-group').size()
+                                || jqueryfrom.find('select[name=\''+ data.field+ '\']').parents('.control-group').size()) {
+                                obj = jqueryfrom.find('input[name=\''+ data.field+ '\'],textarea[name=\''+ data.field+ '\'],select[name=\''+ data.field+ '\']').parents('.control-group');
+                                obj.addClass('error');
+                                if (obj.find('.help-inline,.help-block').size()) {
+                                    html = obj.find('.help-inline,.help-block').html();
+                                    obj.find('.help-inline,.help-block').data('orgtext',html).html(data.msg);
+                                } else {
+                                    obj.find('.controls').append('<span class=\"help-inline\">'+ data.msg+ '</span>');
+                                }
+                            } else {
+                                jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
+                            }
+                        }else{
+                            jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
+                        }
+                        if (data.url) {
+                            window.setTimeout(function() {
+                                window.location.href = data.url;
+                            }, 2000);
+                        }
+                    }
+                }
+
             }).fail(function (jqXHR, statusText){
                 console.error(statusText);
                 $.niftyNoty({
@@ -420,252 +483,11 @@
                 jqueryfrom.data('submiting',0);
                 console.log("complete");
             });
-
-
-
-
-            //
-            // jqueryfrom.data('submiting',1);
-            // console.log($(this).serializeArray());
-            // jqueryfrom.ajaxSubmit({
-            //     dataType : 'json',
-            //     beforeSend : function(data) {
-            //         console.log("beforeSend:");
-            //         console.log(data);
-            //     //         jqueryfrom.find('.control-group').each(
-            //     //             function(index,item) {
-            //     //                 if ($(this).hasClass('error')&& $(this).find('span.help-inline,span.help-block').data('orgtext')) {
-            //     //                     $(this).removeClass('error').find('span.help-inline,span.help-block').html($(this).find('span.help-inline,span.help-block').data('orgtext'));
-            //     //                 } else if($(this).hasClass('error')) {
-            //     //                     $(this).removeClass('error').find('span.help-inline,span.help-block').remove();
-            //     //                 }
-            //     //             });
-            //     //         jqueryfrom.find('.alert-block').remove();
-            //     //         cploading();
-            //     },
-            //     //     success : function(data, statusText) {
-            //     //         console.log("success");
-            //     //         cploadingdestroy();
-            //     //         if (data.msg) {
-            //     //             if (data.state == 1) {
-            //     //                 if (data.url) {
-            //     //                     buttons = [ {
-            //     //                         'text' : '确定',
-            //     //                         'click' : function() {
-            //     //                             cpdialogdestroy();
-            //     //                             window.location.href = escape2Html(data.url);
-            //     //                         }
-            //     //                     } ];
-            //     //                 } else {
-            //     //                     buttons = [ {
-            //     //                         'text' : '确定',
-            //     //                         'click' : function() {
-            //     //                             cpdialogdestroy();
-            //     //                         }
-            //     //                     } ];
-            //     //                 }
-            //     //                 cpdialog("提示信息",data.msg,buttons);
-            //     //             } else if (data.state == 2) {
-            //     //                 buttons = [];
-            //     //                 cpdialog("",data.msg,buttons,false,2);
-            //     //                 if (data.url) {
-            //     //                     window.setTimeout(function() {
-            //     //                         window.location.href = data.url;
-            //     //                     }, 2000);
-            //     //                 }
-            //     //             } else {
-            //     //                 if (data.field) {
-            //     //                     if (jqueryfrom.find('input[name=\''+ data.field+ '\']').parents('.control-group').size()
-            //     //                         || jqueryfrom.find('textarea[name=\''+ data.field+ '\']').parents('.control-group').size()
-            //     //                         || jqueryfrom.find('select[name=\''+ data.field+ '\']').parents('.control-group').size()) {
-            //     //                         obj = jqueryfrom.find('input[name=\''+ data.field+ '\'],textarea[name=\''+ data.field+ '\'],select[name=\''+ data.field+ '\']').parents('.control-group');
-            //     //                         obj.addClass('error');
-            //     //                         if (obj.find('.help-inline,.help-block').size()) {
-            //     //                             html = obj.find('.help-inline,.help-block').html();
-            //     //                             obj.find('.help-inline,.help-block').data('orgtext',html).html(data.msg);
-            //     //                         } else {
-            //     //                             obj.find('.controls').append('<span class=\"help-inline\">'+ data.msg+ '</span>');
-            //     //                         }
-            //     //                     } else {
-            //     //                         jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
-            //     //                     }
-            //     //                 }else{
-            //     //                     jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
-            //     //                 }
-            //     //                 if (data.url) {
-            //     //                     window.setTimeout(function() {
-            //     //                         window.location.href = data.url;
-            //     //                     }, 2000);
-            //     //                 }
-            //     //             }
-            //     //         }
-            //     //         if ($.isFunction(afterSucess)) {
-            //     //             afterSucess(data, statusText);
-            //     //         }
-            //     //         jqueryfrom.data('submiting',0);
-            //     //     }
-            //     });
-
         });
-        function fixajaxdialog(){
-            $('.ajaxdialog-callback').bind('click',function (){
-                title=$(this).attr('title');
-                if(!title){
-                    title=$(this).text();
-                }
-                var args = $(this).attr('args');
-                cpdialog(title,$(this).attr('href'),
-                    [ {
-                        'text' : "取消",
-                        'click' : 'close'
-                    }, {
-                        'text' : "确定",
-                        'main' : true,
-                        'click' : function() {
-                            if ($('form.dialog').size()) {
-                                $.ajax({
-                                    cache: true,
-                                    type: "POST",
-                                    url:$('form.dialog').attr("action"),
-                                    data:$('form.dialog').serialize(),// 你的formid
-                                    async: false,
-                                    error: function(request) {
-                                        alert("Connection error");
-                                    },
-                                    success: function(data) {
-                                        if(typeof dialogcallback == "function"){
-                                            dialogcallback(args);
-                                        }
-                                        cpdialogdestroy();
-                                    }
-                                });
-                            } else {
-                                cpdialogdestroy();
-                            }
-                        }
-                    }
-                    ], true, 0);
-                return false;
-            });
-        }
-        function htmlload(htmlobj, url, func, postdata) {
-
-        }
-        function cpdialog(title, html, buttons, isurl, autodestorytime) {
-
-        }
-        function cploading() {
-        }
-        function cploadingdestroy() {
-        }
-        function cpdialogdestroy() {
-        }
         //转意符换成普通字符
         function escape2Html(str) {
             var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
             return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
-        }
-        function ajaxform(jqueryfrom, beforeSubmit,afterSucess) {
-            jqueryfrom.submit(function() {
-                var jqueryfrom = $(this);
-                console.log("jqueryfrom.data('submiting')",jqueryfrom.data('submiting'));
-                if(jqueryfrom.data('submiting')){
-                    zbjkit.tips('程序已经提交中了，请稍后片刻。', 'success');
-                    return false;
-                }
-                jqueryfrom.data('submiting',1);
-                $(this).ajaxSubmit({
-                    dataType : 'json',
-                    beforeSend : function(data) {
-                        jqueryfrom.find('.control-group').each(
-                            function(index,item) {
-                                if ($(this).hasClass('error')&& $(this).find('span.help-inline,span.help-block').data('orgtext')) {
-                                    $(this).removeClass('error').find('span.help-inline,span.help-block').html($(this).find('span.help-inline,span.help-block').data('orgtext'));
-                                } else if($(this).hasClass('error')) {
-                                    $(this).removeClass('error').find('span.help-inline,span.help-block').remove();
-                                }
-                            });
-                        jqueryfrom.find('.alert-block').remove();
-                        cploading();
-                    },
-                    complete:function (){
-                        console.log("complete");
-                    },
-                    beforeSubmit : function(arr, form,options) {
-                        if ($.isFunction(beforeSubmit)) {
-                            var res = beforeSubmit(arr, form,options);
-                            console.log(res);
-                            if(res == false){
-                                jqueryfrom.data('submiting',0);
-                            }
-                            return res;
-                        }
-                        return true;
-                    },
-                    success : function(data, statusText) {
-                        console.log("success");
-                        cploadingdestroy();
-                        if (data.msg) {
-                            if (data.state == 1) {
-                                if (data.url) {
-                                    buttons = [ {
-                                        'text' : '确定',
-                                        'click' : function() {
-                                            cpdialogdestroy();
-                                            window.location.href = escape2Html(data.url);
-                                        }
-                                    } ];
-                                } else {
-                                    buttons = [ {
-                                        'text' : '确定',
-                                        'click' : function() {
-                                            cpdialogdestroy();
-                                        }
-                                    } ];
-                                }
-                                cpdialog("提示信息",data.msg,buttons);
-                            } else if (data.state == 2) {
-                                buttons = [];
-                                cpdialog("",data.msg,buttons,false,2);
-                                if (data.url) {
-                                    window.setTimeout(function() {
-                                        window.location.href = data.url;
-                                    }, 2000);
-                                }
-                            } else {
-                                if (data.field) {
-                                    if (jqueryfrom.find('input[name=\''+ data.field+ '\']').parents('.control-group').size()
-                                        || jqueryfrom.find('textarea[name=\''+ data.field+ '\']').parents('.control-group').size()
-                                        || jqueryfrom.find('select[name=\''+ data.field+ '\']').parents('.control-group').size()) {
-                                        obj = jqueryfrom.find('input[name=\''+ data.field+ '\'],textarea[name=\''+ data.field+ '\'],select[name=\''+ data.field+ '\']').parents('.control-group');
-                                        obj.addClass('error');
-                                        if (obj.find('.help-inline,.help-block').size()) {
-                                            html = obj.find('.help-inline,.help-block').html();
-                                            obj.find('.help-inline,.help-block').data('orgtext',html).html(data.msg);
-                                        } else {
-                                            obj.find('.controls').append('<span class=\"help-inline\">'+ data.msg+ '</span>');
-                                        }
-                                    } else {
-                                        jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
-                                    }
-                                }else{
-                                    jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
-                                }
-                                if (data.url) {
-                                    window.setTimeout(function() {
-                                        window.location.href = data.url;
-                                    }, 2000);
-                                }
-                            }
-                        }
-                        if ($.isFunction(afterSucess)) {
-                            afterSucess(data, statusText);
-                        }
-                        jqueryfrom.data('submiting',0);
-                    }
-                });
-                return false;
-            });
         }
         function geturlparam(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
