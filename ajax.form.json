@@ -1,0 +1,12 @@
+{
+  "message":"only request",
+  "link":"/1.html",
+
+  "autoJump":5,
+  "autoHide":false,
+  "error":{
+    "Email":"text",
+    "password":"tex3t312312",
+    "password32":"tex3t312312"
+  }
+}

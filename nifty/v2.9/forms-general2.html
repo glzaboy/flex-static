@@ -98,10 +98,10 @@
 					
 					        <!-- Inline Form  -->
 					        <!--===================================================-->
-					        <form class="form-inline ajaxform" method="post" action="/ajax.link2.json">
+					        <form class="form-inline ajaxform" method="post" action="/ajax.form2.json">
 					            <div class="form-group">
 					                <label for="demo-inline-inputmail" class="sr-only">Email address</label>
-					                <input type="email" name="email" placeholder="Enter email" id="demo-inline-inputmail" class="form-control">
+					                <input type="email" name="Email" placeholder="Enter email" id="demo-inline-inputmail" class="form-control">
 					            </div>
 					            <div class="form-group">
 					                <label for="demo-inline-inputpass" class="sr-only">Password</label>
@@ -162,23 +162,24 @@
 					
 					            <!--Horizontal Form-->
 					            <!--===================================================-->
-					            <form class="form-horizontal ajaxform">
+					            <form class="form-horizontal ajaxform" action="/ajax.form2.json">
 					                <div class="panel-body">
 					                    <div class="form-group">
 					                        <label class="col-sm-3 control-label" for="demo-hor-inputemail">Email</label>
 					                        <div class="col-sm-9">
-					                            <input type="email" placeholder="Email" id="demo-hor-inputemail" class="form-control">
+					                            <input type="email" placeholder="Email" name="Email" id="demo-hor-inputemail" class="form-control">
 					                        </div>
 					                    </div>
 					                    <div class="form-group">
 					                        <label class="col-sm-3 control-label" for="demo-hor-inputpass">Password</label>
 					                        <div class="col-sm-9">
-					                            <input type="password" placeholder="Password" id="demo-hor-inputpass" class="form-control">
+					                            <input type="password" placeholder="Password" name ="password" id="demo-hor-inputpass" class="form-control">
+                                                <small class="help-block">这里输入害惨</small>
 					                        </div>
 					                    </div>
 					                    <div class="form-group">
 					                        <div class="col-sm-offset-3 col-sm-9">
-					                            <input id="demo-remember-me-2" class="magic-checkbox" type="checkbox">
+					                            <input id="demo-remember-me-2" class="magic-checkbox" name="rem" type="checkbox">
 					                            <label for="demo-remember-me-2">Remember me</label>
 					                        </div>
 					                    </div>
@@ -380,6 +381,7 @@
         $('body').on('submit','form.ajaxform',function(e){
             e.preventDefault();
             var jqueryfrom = $(this);
+            var hasinline =jqueryfrom.hasClass('form-inline');
             console.log("jqueryfrom.data('submiting')",jqueryfrom.data('submiting'));
             if(jqueryfrom.data('submiting')){
                 $.niftyNoty({
@@ -404,73 +406,87 @@
 
 
             console.log(options);
+            jqueryfrom.find('.alert').remove();
             jqueryfrom.find('.form-group').each(
                 function(index,item) {
-                    if ($(this).hasClass('has-error')&& $(this).find('span.help-inline,span.help-block').data('orgtext')) {
-                        $(this).removeClass('has-error').find('span.help-inline,span.help-block').html($(this).find('span.help-inline,span.help-block').data('orgtext'));
-                    } else if($(this).hasClass('has-error')) {
-                        $(this).removeClass('has-error').find('span.help-inline,span.help-block').remove();
+                    if(hasinline){
+                        $(this).removeClass('has-error').find('input,textarea,select').each(function (){
+                            $(this).tooltip('destroy');
+                        })
+                    }else{
+                        if ($(this).hasClass('has-error')&& $(this).find('.help-block').data('orgtext')) {
+                            $(this).removeClass('has-error').find('.help-block').html($(this).find('.help-block').data('orgtext'));
+                        } else if($(this).hasClass('has-error')) {
+                            $(this).removeClass('has-error').find('.help-block').remove();
+                        }
                     }
                 }
             );
-            jqueryfrom.find('.alert-block').remove();
             $.ajax(options)
             .done(function (data, statusText){
                 console.log(data);
-                if (data.msg) {
-                    if (data.state == 1) {
-                        if (data.url) {
-                            buttons = [ {
-                                'text' : '确定',
-                                'click' : function() {
-                                    cpdialogdestroy();
-                                    window.location.href = escape2Html(data.url);
-                                }
-                            } ];
-                        } else {
-                            buttons = [ {
-                                'text' : '确定',
-                                'click' : function() {
-                                    cpdialogdestroy();
-                                }
-                            } ];
-                        }
-                        cpdialog("提示信息",data.msg,buttons);
-                    } else if (data.state == 2) {
-                        buttons = [];
-                        cpdialog("",data.msg,buttons,false,2);
-                        if (data.url) {
-                            window.setTimeout(function() {
-                                window.location.href = data.url;
-                            }, 2000);
-                        }
-                    } else {
-                        if (data.field) {
-                            if (jqueryfrom.find('input[name=\''+ data.field+ '\']').parents('.control-group').size()
-                                || jqueryfrom.find('textarea[name=\''+ data.field+ '\']').parents('.control-group').size()
-                                || jqueryfrom.find('select[name=\''+ data.field+ '\']').parents('.control-group').size()) {
-                                obj = jqueryfrom.find('input[name=\''+ data.field+ '\'],textarea[name=\''+ data.field+ '\'],select[name=\''+ data.field+ '\']').parents('.control-group');
-                                obj.addClass('error');
-                                if (obj.find('.help-inline,.help-block').size()) {
-                                    html = obj.find('.help-inline,.help-block').html();
-                                    obj.find('.help-inline,.help-block').data('orgtext',html).html(data.msg);
-                                } else {
-                                    obj.find('.controls').append('<span class=\"help-inline\">'+ data.msg+ '</span>');
-                                }
-                            } else {
-                                jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
+                if(data.message){
+                    $dialogoption={};
+                    $dialogoption.message=data.message;
+                    $dialogoption.title='提示信息';
+                    $dialogoption.buttons={};
+                    if (data.link && data.link.length>0) {
+                        $dialogoption.buttons.ok = {
+                            label : '确定',
+                            className: "btn-primary",
+                            callback : function() {
+                                window.location.href = data.link;
                             }
-                        }else{
-                            jqueryfrom.prepend('<div class=\"alert alert-block alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>'+ data.msg+ '</div>');
-                        }
-                        if (data.url) {
-                            window.setTimeout(function() {
-                                window.location.href = data.url;
-                            }, 2000);
-                        }
+                        } ;
+                    } else {
+                        $dialogoption.buttons.ok = {
+                            label : '确定',
+                            className: "btn-primary",
+                            callback : function() {
+                            }
+                        } ;
                     }
-                }
+                    $.dialog($dialogoption);
+                }else{
 
+                }
+                if(data.autoJump && data.link && data.link.length>0){
+                    window.setTimeout(function() {
+                        window.location.href = escape2Html(data.link);
+                    }, data.autoJump*1000);
+                }
+                console.log(data.error)
+                if(data.error){
+                    $.each(data.error,function (index,obj){
+                        var fieldobj=jqueryfrom.find('input[name=\''+ index+ '\'],textarea[name=\''+ index+ '\'],select[name=\''+ index+ '\']');
+                        var formgroup = fieldobj.parents('.form-group');
+                        var usetooltip=fieldobj.attr('type')=='checkbox'|| fieldobj.attr('type')=='radio';
+                        if (formgroup.length) {
+                            formgroup.addClass('has-error');
+                            if(!formgroup.hasClass('checkbox')){
+                                formgroup.addClass('checkbox');
+                            }
+                            if (formgroup.find('.help-block').length) {
+                                html = formgroup.find('.help-block').html();
+                                formgroup.find('.help-block').data('orgtext',html).html(obj);
+                            } else {
+                                if(hasinline || usetooltip){
+                                    fieldobj.tooltip({
+                                        container: 'body',
+                                        html: true,
+                                        placement: 'top',
+                                        title: obj
+                                    });
+                                }else{
+                                    fieldobj.parent().append('<small class=\"help-block\">'+ obj+ '</small>');
+                                }
+
+                            }
+                        } else {
+                                jqueryfrom.prepend('<div class=\"alert alert-danger\"><button class=\"close\" data-dismiss=\"alert\"><i class=\"pci-cross pci-circle\"></i></button>'+obj+'</div>');
+                        }
+                    })
+                }
             }).fail(function (jqXHR, statusText){
                 console.error(statusText);
                 $.niftyNoty({

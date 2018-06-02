@@ -1,0 +1,12 @@
+{
+  "message":"",
+  "link":"/1.html",
+
+  "autoJump":false,
+  "autoHide":false,
+  "error":{
+    "Email":"text",
+    "password":"tex3t312312",
+    "rem":"请输入"
+  }
+}
