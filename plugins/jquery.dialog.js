@@ -143,11 +143,6 @@
 
     $.dialog             = Plugin;
     $.dialog.Constructor = dialog;
-
-
-    // COLLAPSE NO CONFLICT
-    // ====================
-
     $.dialog.noConflict = function () {
         $.dialog = old;
         return this;
@@ -164,34 +159,5 @@
             $(this).parents('.modal-lg').addClass('modal-dialog');
         }
         $.dialog("remove");
-    })
-}));
-(function (factory) {
-
-    "use strict";
-    if (typeof define === "function" && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(["jquery"], factory);
-    } else if (typeof exports === "object") {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory(require("jquery"));
-    } else {
-        factory( (typeof(jQuery) != 'undefined') ? jQuery : window.Zepto );
-    }
-
-}(function ($){
-    var ajaxFormHandle=function () {
-
-    }
-    var old=$.fn.ajaxFormHandle;
-    $.fn.extend({});
-
-    $.fn.ajaxFormHandle.noConflict=function () {
-        $.fn.ajaxFormHandle=old;
-        return this;
-    }
-
-
+    });
 }));
