@@ -14,7 +14,7 @@
     }
 
 }(function ($){
-    $.extend({
+    var op={
         "escapeurl":function (str) {
             var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
             return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
@@ -33,30 +33,35 @@
                 args[match[1]] = match[2];
             }
             return args;
-        },
-        'replaceurlparam':function (name,value, pathname){
-            var reg = new RegExp("(^|&)" + name + "=[^&]*", "i");
-            if(pathname == undefined) {
-                if(geturlparam(name)){
-                    window.location.search='?'+window.location.search.substr(1).replace(reg,RegExp.$1+name+'='+value);
+        }
+    };
+    $.extend({
+        "escapeurl":op.escapeurl,
+        'geturlparam':op.geturlparam,
+        'geturlparams':op.geturlparams,
+        'replaceurlparams':function (params, pathname){
+            var pathname=pathname?pathname:window.location.href.replace(/\?.{0,}/,'');
+            var search=window.location.search?window.location.search:'';
+            $.each(params,function (index,obj){
+                console.log(index);
+                console.log(obj);
+                var reg = new RegExp("(^|&)" + index + "=[^&]*", "i");
+                if(op.geturlparam(index)){
+                    search='?'+search.substr(1).replace(reg,RegExp.$1+index+'='+obj);
                 }else{
-                    if(window.location.search.match(/^\?/)){
-                        window.location.search=window.location.search+'&'+name+'='+escape(value);
+                    if(search.match(/^\?/) && search.length>1){
+                        search=search+'&'+index+'='+encodeURIComponent(obj);
                     }else{
-                        window.location.search='?'+name+'='+escape(value);
+                        search='?'+index+'='+encodeURIComponent(obj);
                     }
                 }
-            }else{
-                if(geturlparam(name)){
-                    window.location.href = pathname + '?'+window.location.search.substr(1).replace(reg,RegExp.$1+name+'='+value);
-                }else{
-                    if(window.location.search.match(/^\?/)){
-                        window.location.href = pathname +window.location.search+'&'+name+'='+escape(value);
-                    }else{
-                        window.location.href = pathname + '?'+name+'='+escape(value);
-                    }
-                }
-            }
+            });
+            window.location.href=pathname+search;
+        }
+    });
+    $.extend({
+        'replaceurlparam':function (name,value, pathname) {
+           $.replaceurlparams(JSON.parse('{"'+name+'": "'+value+'"}'), pathname);
         }
     });
     $.fn.extend({
@@ -306,8 +311,6 @@
                         } ;
                     }
                     $.dialog($dialogoption);
-                }else{
-
                 }
                 if(data.autoJump && data.link && data.link.length>0){
                     window.setTimeout(function() {
