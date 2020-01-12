@@ -314,7 +314,7 @@
                 }
                 if(data.autoJump && data.link && data.link.length>0){
                     window.setTimeout(function() {
-                        window.location.href = escape2Html(data.link);
+                        window.location.href = $.escapeurl(data.link);
                     }, data.autoJump*1000);
                 }
                 // console.log(data.error)
