@@ -188,6 +188,7 @@
                         }
                     } ;
                 }
+                $.dialog("remove");
                 $.dialog($dialogoption);
             }
         }).fail(function (jqXHR, textStatus) {
@@ -226,6 +227,7 @@
                 callback : function() {
                 }
             } ;
+            $.dialog("remove");
             return $.dialog($dialogoption);
         };
         $(this).trigger('req.ajax');
@@ -310,6 +312,7 @@
                             }
                         } ;
                     }
+                    $.dialog("remove");
                     $.dialog($dialogoption);
                 }
                 if(data.autoJump && data.link && data.link.length>0){
