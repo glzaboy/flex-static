@@ -152,12 +152,9 @@
             if(data.linkTextChange){
                 linkobj.text(data.linkTextChange)
             }
-            if(data.linkTextChange){
-                linkobj.text(data.linkTextChange)
-            }
-            if(data.autoJump && data.link && data.link.length>0){
+            if(data.autoJump){
                 window.setTimeout(function() {
-                    window.location.href = data.link;
+                    window.location.href = data.link?$.escapeurl(data.link):window.location.href;
                 }, data.autoJump*1000);
             }
             if(data.autoHide){
@@ -315,9 +312,9 @@
                     $.dialog("remove");
                     $.dialog($dialogoption);
                 }
-                if(data.autoJump && data.link && data.link.length>0){
+                if(data.autoJump){
                     window.setTimeout(function() {
-                        window.location.href = $.escapeurl(data.link);
+                        window.location.href = data.link?$.escapeurl(data.link):window.location.href;
                     }, data.autoJump*1000);
                 }
                 // console.log(data.error)
