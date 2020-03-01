@@ -6,9 +6,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor.
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat.js';
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote.js';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold.js';
-import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder.js';
-import CKFinderUploadAdapter from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter.js';
-import Heading from '@ckeditor/ckeditor5-heading/src/heading.js';
 import Image from '@ckeditor/ckeditor5-image/src/image.js';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption.js';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle.js';
@@ -23,23 +20,28 @@ import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefrom
 import Table from '@ckeditor/ckeditor5-table/src/table.js';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar.js';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment.js';
-import FontSize from '@ckeditor/ckeditor5-font/src/fontsize.js';
-import FontColor from '@ckeditor/ckeditor5-font/src/fontcolor.js';
-import FontBackgroundColor from '@ckeditor/ckeditor5-font/src/fontbackgroundcolor.js';
-import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight.js';
-import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize.js';
-import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat.js';
-import WordCount from '@ckeditor/ckeditor5-word-count/src/wordcount.js';
-import TodoList from '@ckeditor/ckeditor5-list/src/todolist';
 import Autosave from '@ckeditor/ckeditor5-autosave/src/autosave.js';
-import Subscript from '@ckeditor/ckeditor5-basic-styles/src/subscript.js';
-import Superscript from '@ckeditor/ckeditor5-basic-styles/src/superscript.js';
-import Title from '@ckeditor/ckeditor5-heading/src/title.js';
-import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough.js';
-import Mention from '@ckeditor/ckeditor5-mention/src/mention.js';
 import Code from '@ckeditor/ckeditor5-basic-styles/src/code.js';
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock.js';
+import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter.js';
+import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters.js';
+import FontBackgroundColor from '@ckeditor/ckeditor5-font/src/fontbackgroundcolor.js';
+import FontColor from '@ckeditor/ckeditor5-font/src/fontcolor.js';
+import FontSize from '@ckeditor/ckeditor5-font/src/fontsize.js';
+import FontFamily from '@ckeditor/ckeditor5-font/src/fontfamily.js';
+import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight.js';
+import Heading from '@ckeditor/ckeditor5-heading/src/heading.js';
+import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat.js';
+import RestrictedEditingMode from '@ckeditor/ckeditor5-restricted-editing/src/restrictededitingmode.js';
+import SpecialCharactersEssentials from '@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials.js';
+import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough.js';
+import Subscript from '@ckeditor/ckeditor5-basic-styles/src/subscript.js';
+import Superscript from '@ckeditor/ckeditor5-basic-styles/src/superscript.js';
+import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
+import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
+import Title from '@ckeditor/ckeditor5-heading/src/title.js';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js';
+import WordCount from '@ckeditor/ckeditor5-word-count/src/wordcount.js';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials.js';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph.js';
 
@@ -50,9 +52,6 @@ Editor.builtinPlugins = [
 	Autoformat,
 	BlockQuote,
 	Bold,
-	CKFinder,
-	CKFinderUploadAdapter,
-	Heading,
 	Image,
 	ImageCaption,
 	ImageStyle,
@@ -67,23 +66,28 @@ Editor.builtinPlugins = [
 	Table,
 	TableToolbar,
 	Alignment,
-	FontSize,
-	FontColor,
-	FontBackgroundColor,
-	Highlight,
-	ImageResize,
-	RemoveFormat,
-	WordCount,
-	TodoList,
 	Autosave,
-	Subscript,
-	Superscript,
-	Title,
-	Strikethrough,
-	Mention,
 	Code,
 	CodeBlock,
+	SimpleUploadAdapter,
+	SpecialCharacters,
+	FontBackgroundColor,
+	FontColor,
+	FontSize,
+	FontFamily,
+	Highlight,
+	Heading,
+	RemoveFormat,
+	RestrictedEditingMode,
+	SpecialCharactersEssentials,
+	Strikethrough,
+	Subscript,
+	Superscript,
+	TableCellProperties,
+	TableProperties,
+	Title,
 	Underline,
+	WordCount,
 	Essentials,
 	Paragraph
 ];
