@@ -289,7 +289,7 @@
         .done(function (data, statusText){
                 console.log(data);
                 if(data.message){
-                    $dialogoption={};
+                    let $dialogoption={};
                     $dialogoption.message=data.message;
                     $dialogoption.title='提示信息';
                     $dialogoption.buttons={};
