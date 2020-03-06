@@ -165,7 +165,7 @@
                 }
             }
             if(data.message){
-                $dialogoption={};
+                let $dialogoption={};
                 $dialogoption.message=data.message;
                 $dialogoption.title='提示信息';
                 $dialogoption.buttons={};
@@ -207,7 +207,7 @@
         }
         if(linkobj.hasClass("ajaxask")){
             var asktext = linkobj.data('asktext') ? linkobj.data('asktext') : "您确定要" + linkobj.text()+ "?";
-            $dialogoption={};
+            let $dialogoption={};
             $dialogoption.message=asktext;
             $dialogoption.title='提示信息';
             $dialogoption.buttons={};
@@ -237,7 +237,7 @@
             title=linkobj.text();
         }
         var url=linkobj.attr('href');
-        $dialogoption={};
+        let $dialogoption={};
         $dialogoption.url=url;
         $dialogoption.title=title;
         $dialogoption.buttons={};
